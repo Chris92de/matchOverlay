@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<moverlay>
+    <settings>
+        <autoenable>false</autoenable> <!-- true = autostart, false = start with command -->
+        <to>spectators</to> <!-- enable for: all, players or spectators -->
+    </settings>
+    <teams>
+        <team_blue>Blue Team</team_blue> <!-- Default name for Team Blue -->
+        <team_red>Red Team</team_red> <!-- Default name for Team Red -->
+    </teams>
+    <display>          <!-- Modify the look of the overlay, re-position it, etc. -->
+        <bg_image>http://chris92.tm-betmania.com/images/scoreboard.png</bg_image>    <!-- Background image of the overlay -->
+        <bg_pos_x>-42.5</bg_pos_x>    <!-- Background image, X position -->
+        <bg_pos_y>45</bg_pos_y>   <!-- Background image, Y position -->
+        <t1_pos_x>-36</t1_pos_x>   <!-- Team 1 name, X position -->
+        <t1_pos_y>40.5</t1_pos_y>   <!-- Team 1 name, Y position -->
+        <t2_pos_x>36</t2_pos_x>   <!-- Team 2 name, X position -->
+        <t2_pos_y>40.5</t2_pos_y>   <!-- Team 2 name, Y position -->
+        <s1_pos_x>-6</s1_pos_x>    <!-- Score 1, X position -->
+        <s1_pos_y>39.5</s1_pos_y>    <!-- Score 1, Y position -->
+        <s2_pos_x>6</s2_pos_x>    <!-- Score 2, X position -->
+        <s2_pos_y>39.5</s2_pos_y>    <!-- Score 2, Y position -->
+        <soverall_pos_x>0.0</soverall_pos_x>    <!-- Overall score, X position -->
+        <soverall_pos_y>36.3</soverall_pos_y>    <!-- Overall score, Y position -->
+    </display>
+</moverlay>
