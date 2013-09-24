@@ -36,16 +36,21 @@ These commands require at least Admin permissions.
 
 COMMANDS: 
 
-/moverlay enable 			           Activates the plugin & overlay. 
-/moverlay disable				   Hides the overlay for everyone.
-/moverlay to <all/players/spectators>              Who should see the overlay? (Default: only Spectators)
-/moverlay team <1/2> <team name>                   Lets you set names for the teams (1 = Blue team / 2 = Red team)
-/moverlay mscore <Score1> <Score2>                 With this command you can set the overall score of the match. (Will be automated in a future release)
-/moverlay about                                    Displays a bit of information about the plugin
+/moverlay enable -> Activates the plugin & overlay. 
+
+/moverlay disable -> Hides the overlay for everyone.
+
+/moverlay to <all/players/spectators> -> Who should see the overlay? (Default: only Spectators)
+
+/moverlay team <1/2> <team name> -> Lets you set names for the teams (1 = Blue team / 2 = Red team)
+
+/moverlay mscore <Score1> <Score2> -> With this command you can set the overall score of the match. (Will be automated in a future release)
+
+/moverlay about -> Displays a bit of information about the plugin
 
 -------------------------------------------------------------------------------------------------
--> 3. Bug reports
+-> 3. Bug reports & Feature Requests
 -------------------------------------------------------------------------------------------------
 
-Should you encounter any bugs, please post them on the TM-Forum thread (http://www.tm-forum.com/viewtopic.php?f=127&t=30411)
-I will check that at least once daily. 
+In case you encounter any bugs, report an issue over on [GitHub](http://github.com/Chris92de/matchOverlay).
+You can also request features there.
