@@ -1,3 +1,7 @@
+v0.4:
+
+- Fixed a bug where the Team Score would be displayed incorrectly when Team Red was leading.
+
 v0.3:
 
 - Re-written / cleaned up code

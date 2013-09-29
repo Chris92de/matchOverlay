@@ -7,7 +7,7 @@
  *
  * ----------------------------------------------------------------------------------
  * Author:           Chris92, TheM
- * Version:          v0.3
+ * Version:          v0.4
  * Date:             2013-03-21
  * Copyright:        Christopher "Chris92" Flügel, Max "TheM" Klaversma
  * System:           XAseco/1.15b+ and XAseco2/1.01+
@@ -39,7 +39,7 @@ class mOverlay {
     var $state;
     var $score;
     var $teams;
-    var $version = '0.3';
+    var $version = '0.4';
     var $to = 2; // 0 = Send to all, 1 = Only to players, 2 = Only to spectators
     var $close = false;
     var $timeout = 0;
@@ -291,7 +291,29 @@ class mOverlay {
     function ovrly_show($aseco, $login) {
         if(!$this->state) return;
 
-        $aseco->client->query('GetCurrentRanking', 2, 0);
+	if(defined('XASECO2_VERSION')) {
+	$aseco->client->query('GetCurrentWinnerTeam');
+	$winningteam = $aseco->client->getResponse();
+
+	if($winningteam>0){
+	$aseco->client->query('GetCurrentRanking', 2, 0);
+        $tscore = $aseco->client->getResponse();
+
+        $xml = '<manialinks>
+        <manialink id='.$this->mlid.'>
+         <quad posn="'.$this->display->bg->pos_x.' '.$this->display->bg->pos_y.' 0" sizen="85 11.3" image="'.$this->display->bg->image.'" />
+        <label posn="'.$this->display->s1->pos_x.' '.$this->display->s1->pos_y.' 1" sizen="19.8 5" style="TextRaceChrono" halign="center" valign="center" textsize="8" textcolor="FFFF" text="'.$tscore[1]['Score'].'"></label>
+        <label posn="'.$this->display->s2->pos_x.' '.$this->display->s2->pos_y.' 1" sizen="19.8 5" style="TextRaceChrono" halign="center" valign="center" textsize="8" textcolor="FFFF" text="'.$tscore[0]['Score'].'"></label>
+        <label posn="'.$this->display->soverall->pos_x.' '.$this->display->soverall->pos_y.' 1" sizen="19.8 5" style="TextTitle3" halign="center" valign="center" textsize="2" textcolor="FFFF" text="'.$this->score[0].' - '.$this->score[1].'"></label>
+        <label posn="'.$this->display->t1->pos_x.' '.$this->display->t1->pos_y.' 1" style="TextRankingsBig" valign="center" halign="left" sizen="39 4" textsize="4" textcolor="FFFF" text="'.$this->teams[0].'"></label>
+        <label posn="'.$this->display->t2->pos_x.' '.$this->display->t2->pos_y.' 1" style="TextRankingsBig" valign="center" halign="right" sizen="20.8 3.6" textsize="4" textcolor="FFFF" text="'.$this->teams[1].'"></label>
+        </manialink>
+        </manialinks>';
+	$aseco->client->query('SendDisplayManialinkPageToLogin', $login, $xml, ($this->timeout * 1000), $this->close);
+        $aseco->console('[mOverlay] Showing overlay to {1}!', $login);
+        }
+	else {
+	$aseco->client->query('GetCurrentRanking', 2, 0);
         $tscore = $aseco->client->getResponse();
 
         $xml = '<manialinks>
@@ -304,9 +326,26 @@ class mOverlay {
         <label posn="'.$this->display->t2->pos_x.' '.$this->display->t2->pos_y.' 1" style="TextRankingsBig" valign="center" halign="right" sizen="20.8 3.6" textsize="4" textcolor="FFFF" text="'.$this->teams[1].'"></label>
         </manialink>
         </manialinks>';
-
-        $aseco->client->query('SendDisplayManialinkPageToLogin', $login, $xml, ($this->timeout * 1000), $this->close);
+	$aseco->client->query('SendDisplayManialinkPageToLogin', $login, $xml, ($this->timeout * 1000), $this->close);
         $aseco->console('[mOverlay] Showing overlay to {1}!', $login);
+	}}
+	else {
+		$aseco->client->query('GetCurrentRanking', 2, 0);
+        $tscore = $aseco->client->getResponse();
+
+        $xml = '<manialinks>
+        <manialink id='.$this->mlid.'>
+         <quad posn="'.$this->display->bg->pos_x.' '.$this->display->bg->pos_y.' 0" sizen="85 11.3" image="'.$this->display->bg->image.'" />
+        <label posn="'.$this->display->s1->pos_x.' '.$this->display->s1->pos_y.' 1" sizen="19.8 5" style="TextRaceChrono" halign="center" valign="center" textsize="8" textcolor="FFFF" text="'.$tscore[0]['Score'].'"></label>
+        <label posn="'.$this->display->s2->pos_x.' '.$this->display->s2->pos_y.' 1" sizen="19.8 5" style="TextRaceChrono" halign="center" valign="center" textsize="8" textcolor="FFFF" text="'.$tscore[1]['Score'].'"></label>
+        <label posn="'.$this->display->soverall->pos_x.' '.$this->display->soverall->pos_y.' 1" sizen="19.8 5" style="TextTitle3" halign="center" valign="center" textsize="2" textcolor="FFFF" text="'.$this->score[0].' - '.$this->score[1].'"></label>
+        <label posn="'.$this->display->t1->pos_x.' '.$this->display->t1->pos_y.' 1" style="TextRankingsBig" valign="center" halign="left" sizen="39 4" textsize="4" textcolor="FFFF" text="'.$this->teams[0].'"></label>
+        <label posn="'.$this->display->t2->pos_x.' '.$this->display->t2->pos_y.' 1" style="TextRankingsBig" valign="center" halign="right" sizen="20.8 3.6" textsize="4" textcolor="FFFF" text="'.$this->teams[1].'"></label>
+        </manialink>
+        </manialinks>';
+	$aseco->client->query('SendDisplayManialinkPageToLogin', $login, $xml, ($this->timeout * 1000), $this->close);
+        $aseco->console('[mOverlay] Showing overlay to {1}!', $login);
+	}
     }
 
     function ovrly_hide($aseco, $login) {
