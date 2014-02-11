@@ -9,7 +9,7 @@
         <team_red>Red Team</team_red> <!-- Default name for Team Red -->
     </teams>
     <display>          <!-- Modify the look of the overlay, re-position it, etc. -->
-        <bg_image>http://chris92.tm-betmania.com/images/scoreboard.png</bg_image>    <!-- Background image of the overlay -->
+        <bg_image>http://chris92.de/images/scoreboard.png</bg_image>    <!-- Background image of the overlay -->
         <bg_pos_x>-42.5</bg_pos_x>    <!-- Background image, X position -->
         <bg_pos_y>45</bg_pos_y>   <!-- Background image, Y position -->
         <t1_pos_x>-36</t1_pos_x>   <!-- Team 1 name, X position -->
