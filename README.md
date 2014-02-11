@@ -44,6 +44,8 @@ COMMANDS:
 
 /moverlay team <1/2> <team name> -> Lets you set names for the teams (1 = Blue team / 2 = Red team)
 
+/moverlay team auto <1/2> -> Automatic Team name description. (1 = Blue team / 2 = Red team)
+
 /moverlay mscore <Score1> <Score2> -> With this command you can set the overall score of the match. (Will be automated in a future release)
 
 /moverlay about -> Displays a bit of information about the plugin
