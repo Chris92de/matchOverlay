@@ -178,7 +178,10 @@ class mOverlay {
                 	$players_array[0];
                 	$array_position = 0;
                 	foreach($aseco->server->players->player_list as $player){
-				        if ($player->teamid == ($cmd[2]-1)) {
+                        $aseco->client->query('GetPlayerInfo', $player->login, 1);
+                        $response = $aseco->client->getResponse();
+                        var_dump($response);
+				        if ($response["TeamId"] == ($cmd[2]-1)) {
                 		    $players_array[$array_position] = stripColors($player->nickname);
                 		    $array_position++;
 				        }
@@ -187,7 +190,7 @@ class mOverlay {
                 		$auto_teamname = $this->ovrly_commonsubstring($players_array);
                 		$this->teams[($cmd[2]-1)] = $auto_teamname;
                 		$msg = 'Team '.$cmd[2].' seems to be named '.$auto_teamname.'. If incorrect, please set Team name manually.';
-                	} else { $aseco->console('[mOverlay][DEBUG] Variable players_array equals null - {1}', $aseco->server->players->player_list[onkelz_chris]->teamid); }}
+                	} else { $aseco->console('[mOverlay][DEBUG] Variable players_array equals null - {1}', $aseco->server->players->player_list['onkelz_chris']->teamid); }}
             } elseif($cmd[0] == 'mscore') {
                 if(is_numeric($cmd[1]) && is_numeric($cmd[2])) {
                     $this->score = array($cmd[1], $cmd[2]);
