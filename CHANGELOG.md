@@ -1,6 +1,7 @@
 v0.5: 
 
 - Added Automatic Team Name Detection based on common strings in nicknames. 
+
   Command: /moverlay team auto (1/2) // 1 = Blue, 2 = Red
 
 v0.4:
