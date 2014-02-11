@@ -7,9 +7,10 @@
  *
  * ----------------------------------------------------------------------------------
  * Author:           Chris92, TheM
- * Version:          v0.4
+ * Version:          v0.5 beta1
  * Date:             2013-03-21
- * Copyright:        Christopher "Chris92" Fl�gel, Max "TheM" Klaversma
+ * Last updated:     2014-02-11
+ * Copyright:        Christopher "Chris92" Fluegel, Max "TheM" Klaversma
  * System:           XAseco/1.15b+ and XAseco2/1.01+
  * Game:             Trackmania Forever (TMF) / ManiaPlanet (MP)
  * ----------------------------------------------------------------------------------
@@ -33,8 +34,6 @@
  * Dependencies:
  *  - none
  *
- * TODO: 
- *  - Add experimental autonaming of teams (based on http://stackoverflow.com/a/1336357/3237567)
  *
  */
 
