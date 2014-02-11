@@ -7,9 +7,14 @@
  *
  * ----------------------------------------------------------------------------------
  * Author:           Chris92, TheM
- * Version:          v0.4
+<<<<<<< HEAD
+ * Version:          v0.5 beta1
+=======
+ * Version:          v0.5
+>>>>>>> Updated to v0.5 final
  * Date:             2013-03-21
- * Copyright:        Christopher "Chris92" Flügel, Max "TheM" Klaversma
+ * Last updated:     2014-02-11
+ * Copyright:        Christopher "Chris92" Fluegel, Max "TheM" Klaversma
  * System:           XAseco/1.15b+ and XAseco2/1.01+
  * Game:             Trackmania Forever (TMF) / ManiaPlanet (MP)
  * ----------------------------------------------------------------------------------
@@ -32,6 +37,8 @@
  *
  * Dependencies:
  *  - none
+ *
+ *
  */
 
 class mOverlay {
@@ -39,7 +46,7 @@ class mOverlay {
     var $state;
     var $score;
     var $teams;
-    var $version = '0.4';
+    var $version = '0.5';
     var $to = 2; // 0 = Send to all, 1 = Only to players, 2 = Only to spectators
     var $close = false;
     var $timeout = 0;
@@ -158,13 +165,33 @@ class mOverlay {
         $admin = $command['author'];
         $login = $admin->login;
         $nick = $admin->nickname;
-
+        $players_array[0] = null;
+        $msg = '';
         $cmd = explode(' ', $command['params']);
 
         if($aseco->isMasterAdmin($admin) || $aseco->isAdmin($admin)) {
             if($cmd[0] == 'team') {
-                $this->teams[($cmd[1]-1)] = substr(str_replace('team ', '', $command['params']), 1);
-                $msg = 'Team '.$cmd[1].' is now named '.$this->teams[($cmd[1]-1)].'.';
+                if(is_numeric($cmd[1])) {
+                    $this->teams[($cmd[1]-1)] = substr(str_replace('team ', '', $command['params']), 1);
+                    $msg = 'Team '.$cmd[1].' is now named '.$this->teams[($cmd[1]-1)].'.';
+                } elseif($cmd[1] == 'auto') {
+                    $players_array[0];
+                    $array_position = 0;
+                    foreach($aseco->server->players->player_list as $player){
+                        $aseco->client->query('GetPlayerInfo', $player->login, 1);
+                        $response = $aseco->client->getResponse();
+                        if ($response["TeamId"] == ($cmd[2]-1)) {
+                            $players_array[$array_position] = stripColors($player->nickname);
+                            $array_position++;
+                        }
+                    }
+                    if ($players_array[0] != null) {
+                        $auto_teamname = $this->ovrly_commonsubstring($players_array);
+                        if (strlen($auto_teamname) >= 2) { 
+                            $msg = 'Team '.$cmd[2].' seems to be named '.ucwords($auto_teamname).'. If incorrect, please set Team name manually.'; 
+                            $this->teams[($cmd[2]-1)] = ucwords($auto_teamname);} 
+                        else {$msg = 'No common strings detected. Please set Team name manually.';}
+                    } else { $msg = 'Team seems to have no players. Cannot set Team name.'; }}
             } elseif($cmd[0] == 'mscore') {
                 if(is_numeric($cmd[1]) && is_numeric($cmd[2])) {
                     $this->score = array($cmd[1], $cmd[2]);
@@ -266,6 +293,41 @@ class mOverlay {
         }
     }
 
+
+    function ovrly_commonsubstring($words) { // courtesy of http://www.christopherbloom.com/2011/02/24/find-the-longest-common-substring-using-php/
+      $words = array_map('strtolower', array_map('trim', $words));
+      $sort_by_strlen = create_function('$a, $b', 'if (strlen($a) == strlen($b)) { return strcmp($a, $b); } return (strlen($a) < strlen($b)) ? -1 : 1;');
+      usort($words, $sort_by_strlen);
+      // We have to assume that each string has something in common with the first
+      // string (post sort), we just need to figure out what the longest common
+      // string is. If any string DOES NOT have something in common with the first
+      // string, return false.
+      $longest_common_substring = array();
+      $shortest_string = str_split(array_shift($words));
+      while (sizeof($shortest_string)) {
+        array_unshift($longest_common_substring, '');
+        foreach ($shortest_string as $ci => $char) {
+          foreach ($words as $wi => $word) {
+            if (!strstr($word, $longest_common_substring[0] . $char)) {
+              // No match
+              break 2;
+            } // if
+          } // foreach
+          // we found the current char in each word, so add it to the first longest_common_substring element,
+          // then start checking again using the next char as well
+          $longest_common_substring[0].= $char;
+        } // foreach
+        // We've finished looping through the entire shortest_string.
+        // Remove the first char and start all over. Do this until there are no more
+        // chars to search on.
+        array_shift($shortest_string);
+      }
+      // If we made it here then we've run through everything
+      usort($longest_common_substring, $sort_by_strlen);
+      return array_pop($longest_common_substring);
+    }
+
+
     function ovrly_updateAll($aseco) {
         if($this->to == 0) {
             //Send to all players
@@ -291,12 +353,12 @@ class mOverlay {
     function ovrly_show($aseco, $login) {
         if(!$this->state) return;
 
-	if(defined('XASECO2_VERSION')) {
-	$aseco->client->query('GetCurrentWinnerTeam');
-	$winningteam = $aseco->client->getResponse();
+    if(defined('XASECO2_VERSION')) {
+    $aseco->client->query('GetCurrentWinnerTeam');
+    $winningteam = $aseco->client->getResponse();
 
-	if($winningteam>0){
-	$aseco->client->query('GetCurrentRanking', 2, 0);
+    if($winningteam>0){
+    $aseco->client->query('GetCurrentRanking', 2, 0);
         $tscore = $aseco->client->getResponse();
 
         $xml = '<manialinks>
@@ -309,11 +371,11 @@ class mOverlay {
         <label posn="'.$this->display->t2->pos_x.' '.$this->display->t2->pos_y.' 1" style="TextRankingsBig" valign="center" halign="right" sizen="20.8 3.6" textsize="4" textcolor="FFFF" text="'.$this->teams[1].'"></label>
         </manialink>
         </manialinks>';
-	$aseco->client->query('SendDisplayManialinkPageToLogin', $login, $xml, ($this->timeout * 1000), $this->close);
+    $aseco->client->query('SendDisplayManialinkPageToLogin', $login, $xml, ($this->timeout * 1000), $this->close);
         $aseco->console('[mOverlay] Showing overlay to {1}!', $login);
         }
-	else {
-	$aseco->client->query('GetCurrentRanking', 2, 0);
+    else {
+    $aseco->client->query('GetCurrentRanking', 2, 0);
         $tscore = $aseco->client->getResponse();
 
         $xml = '<manialinks>
@@ -326,11 +388,11 @@ class mOverlay {
         <label posn="'.$this->display->t2->pos_x.' '.$this->display->t2->pos_y.' 1" style="TextRankingsBig" valign="center" halign="right" sizen="20.8 3.6" textsize="4" textcolor="FFFF" text="'.$this->teams[1].'"></label>
         </manialink>
         </manialinks>';
-	$aseco->client->query('SendDisplayManialinkPageToLogin', $login, $xml, ($this->timeout * 1000), $this->close);
+    $aseco->client->query('SendDisplayManialinkPageToLogin', $login, $xml, ($this->timeout * 1000), $this->close);
         $aseco->console('[mOverlay] Showing overlay to {1}!', $login);
-	}}
-	else {
-		$aseco->client->query('GetCurrentRanking', 2, 0);
+    }}
+    else {
+        $aseco->client->query('GetCurrentRanking', 2, 0);
         $tscore = $aseco->client->getResponse();
 
         $xml = '<manialinks>
@@ -343,10 +405,10 @@ class mOverlay {
         <label posn="'.$this->display->t2->pos_x.' '.$this->display->t2->pos_y.' 1" style="TextRankingsBig" valign="center" halign="right" sizen="20.8 3.6" textsize="4" textcolor="FFFF" text="'.$this->teams[1].'"></label>
         </manialink>
         </manialinks>';
-	$aseco->client->query('SendDisplayManialinkPageToLogin', $login, $xml, ($this->timeout * 1000), $this->close);
+    $aseco->client->query('SendDisplayManialinkPageToLogin', $login, $xml, ($this->timeout * 1000), $this->close);
         $aseco->console('[mOverlay] Showing overlay to {1}!', $login);
-	}
     }
+}
 
     function ovrly_hide($aseco, $login) {
         $xml = '<manialink id='.$this->mlid.'></manialink>';

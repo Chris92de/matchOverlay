@@ -1,3 +1,9 @@
+v0.5: 
+
+- Added Automatic Team Name Detection based on common strings in nicknames. 
+
+  Command: /moverlay team auto (1/2) // 1 = Blue, 2 = Red
+
 v0.4:
 
 - Fixed a bug where the Team Score would be displayed incorrectly when Team Red was leading.
@@ -5,7 +11,7 @@ v0.4:
 v0.3:
 
 - Re-written / cleaned up code
-- Added support for TM²
+- Added support for TMï¿½
 - Added Config file (moverlay.xml) for customization
 - Bugfix: Fixed a bug where overall score could be set to something non-numerical
 
